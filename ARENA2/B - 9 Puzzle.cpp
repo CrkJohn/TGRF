@@ -45,8 +45,8 @@ void bfs(){
 
 
 int main(){
-	//freopen("in.txt","r",stdin);
-	//freopen("out.txt","w",stdout);
+	freopen("in.txt","r",stdin);
+	freopen("out.txt","w",stdout);
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	bfs();
