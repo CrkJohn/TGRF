@@ -70,3 +70,11 @@ Via: 1.1 vegur
   wc -c respuesta.html
   3742 resultado.html
 ```
+### Punto 6
+
+```
+curl -v www.httpbin.org
+curl -i www.httpbin.org
+
+```
+ ¿Cuales son las diferencias con los diferentes parámetros?
