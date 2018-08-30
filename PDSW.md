@@ -1,6 +1,7 @@
 
-
-## Punto 1-2-3
+#PDSW LABORATORIO N°3
+##PARTE I - Jugando a ser un cliente HTTP
+### Punto 1-2-3
 ``` HTML
 Telnet www.escuelaing.edu.co 80
 Trying 190.24.150.102...
@@ -27,5 +28,20 @@ GET sssss/abc.html HTTP/1.0</pre>
 <hr>
 <address>Apache/2.2.22 (Fedora) Server at www.escuelaing.edu.co Port 80</address>
 </body></html>
+Connection closed by foreign host.
+```
+### Punto 4
+```
+telnet www.httpbin.org 80
+Trying 54.156.237.249...
+Connected to www.httpbin.org.herokudns.com.
+Escape character is '^]'.
+GET /html HPPT/1.1        
+HTTP/1.1 505 HTTP Version Not Supported
+Connection: close
+Server: Cowboy
+Date: Thu, 30 Aug 2018 13:55:53 GMT
+Content-Length: 0
+
 Connection closed by foreign host.
 ```
