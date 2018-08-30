@@ -78,3 +78,13 @@ curl -i www.httpbin.org
 
 ```
  ¿Cuales son las diferencias con los diferentes parámetros?
+ 
+ ## Parte 2 
+ 
+ ### Punto 6
+ ``` 
+    http://localhost:8080//helloServlet?name="Amo PDSW"
+    RESULTADO:
+    Hello"Amo PDSW"!
+ ```
+ 
