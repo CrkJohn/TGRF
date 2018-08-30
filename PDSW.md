@@ -1,10 +1,11 @@
+
+
+## Punto 1-2-3
 ``` HTML
 Telnet www.escuelaing.edu.co 80
 Trying 190.24.150.102...
 Connected to hockney.escuelaing.edu.co.
 Escape character is '^]'.
-get sssss/abc.html HTTP/1.0
-GET sssss/abc.html HTTP/1.0
 GET /sssss/abc.html HTTP/1.0
 HTTP/1.1 400 Bad Request
 Date: Thu, 30 Aug 2018 14:50:23 GMT
