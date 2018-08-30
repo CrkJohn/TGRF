@@ -34,9 +34,9 @@ void bloqueo(ii src){
 		blo[src.fi][src.se]=2;
 		FOR(i,6){
 			int h = src.fi + dx[i] , k =  src.se + dy[i];
-      if(let(h,k) && blo[h][k]!=2 && (G[h][k]=='I' || G[h][k]=='*')){
+     			if(let(h,k) && blo[h][k]!=2 && (G[h][k]=='I' || G[h][k]=='*')){
 					bloqueo(ii(h,k));
-      }
+     			}
 		}
 		return;
 }
@@ -64,47 +64,32 @@ int bfs(const ii &s){
 	}
 }
 
-void pprint(){
-	FOR(i,n){
-		FOR(j,m){
-			cerr << G[i][j];
-		}
-		cerr <<endl;
-	}
-	cerr << endl;
-}
-
 int main(){
-			//freopen("in.txt","r",stdin);
-			//freopen("out.txt","w",stdout);
-			ios::sync_with_stdio(0);
-			cin.tie(0);
-			while(1){
-        cin >> n >> m;
-        if(n+m==0)break;
-				FOR(i,n)cin >> G[i];
-				//pprint();
-
-				FOR(i,n)FOR(j,m){
-					color[i][j] = INF;
-					blo[i][j] = 0;
-					p[i][j] = ii(-1,-1);
+	//freopen("in.txt","r",stdin);
+	//freopen("out.txt","w",stdout);
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	while(1){
+        	cin >> n >> m;
+        	if(n+m==0)break;
+		FOR(i,n)cin >> G[i];
+		FOR(i,n)FOR(j,m){
+			color[i][j] = INF;
+			blo[i][j] = 0;
+			p[i][j] = ii(-1,-1);
+		}
+		FOR(i,n)FOR(j,m)if(G[i][j]=='I')bfs(ii(i,j));
+		cout << endl;
+		FOR(i,n){
+			FOR(j,m){
+            			if(blo[i][j]==2)cout << 'B';
+            			else if(color[i][j]==0) cout << '(';
+            			else if(color[i][j]==1)cout << ')';
+            			else if(G[i][j]=='*')cout << 'F' ;
+				else cout << '.';			
 				}
-
-				FOR(i,n)FOR(j,m)if(G[i][j]=='I')bfs(ii(i,j));
-				cout << endl;
-				FOR(i,n){FOR(j,m){
-            if(blo[i][j]==2)cout << 'B';
-            else if(color[i][j]==0) cout << '(';
-            else if(color[i][j]==1)cout << ')';
-            else if(G[i][j]=='*')cout << 'F' ;
-						else {
-							cout << '.';
-						}
-						//cout << color[i][j] << ' ' ;
-					}
-					cout << endl;
-				}
-			}
+			cout << endl;
+		}
+	}
 	return 0;
 }
