@@ -78,8 +78,23 @@ curl -i www.httpbin.org
 
 ```
  ¿Cuales son las diferencias con los diferentes parámetros?
+ La diferencia entre ambos es el encabezado, uno tiene más información
+ que otro
  
  ## Parte 2 
+ 
+ ### Punto 1
+ 
+ Un Servlet se utiliza para ampliar las capacidades de un servidor, en este caso este Servlet recibe peticiones de los
+ usuarios, son atendidas por el mismo Servlet y envía respuestas al usuario.
+ La petición es HttpServletRequest y las respuestas son HttpServletResponse.
+ El urlPatterns es helloServlet
+ 
+ ### Punto 3
+ 
+ Revise en el pom.xml para qué puerto TCP/IP está configurado el servidor embebido de Tomcat (ver sección de plugins).
+ 
+ El puerto en el que está configurado el servidor es el 8080
  
  ### Punto 6
  ``` 
@@ -89,5 +104,21 @@ curl -i www.httpbin.org
  ```
  
  
- # Parte 3
-## Punto 13
+## Parte 3
+### Punto 13
+
+Recompile y ejecute la aplicación. Abra en su navegador http://localhost:8080/index.html , y rectifique que la página hecha anteriormente sea mostrada. Ingrese los datos y verifique los resultados. Cambie el formulario para que ahora en lugar de POST, use el método GET. ¿Qué diferencia observa?
+
+No funciona, bota error el formulario ya que no hay ningún metodo implementado en la clase SampleServlet para el método GET
+
+### Punto 23
+
+Realice una petición por medio del explorador a la url que se está usando para mostrar los “TODOs” sin parámetros adicionales https://jsonplaceholder.typicode.com/todos/ y analice el resultado. ¿Qué información retorna la url? ¿Qué formato tiene? ¿Qué tiene de diferente con la url donde se envía un parámetro (por ejemplo https://jsonplaceholder.typicode.com/todos/1)?
+
+Con la URL https://jsonplaceholder.typicode.com/todos/ nos muestra la informacion de 200 objetos y está en formato json, si se envía un parametr como por ejemplo https://jsonplaceholder.typicode.com/todos/1 solamente nos muestra la información de 1 objeto
+
+### Punto 26
+
+En el explorador abra la url del servlet creado y observe el resultado. ¿Qué se está viendo? Revise cómo están implementados los métodos de la clase Service.java para entender el funcionamiento interno.
+
+Ahora podemos ver la información de los 200 objetos json pero en formato html
