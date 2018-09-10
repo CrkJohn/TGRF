@@ -1,7 +1,5 @@
-# Teoria-de-grafos
+# Teoria degrafos
 
-''' java
-  public class Hola{
-  }
-
-'''
+```C++
+  cout << "Contenst 3" << endl;
+```
