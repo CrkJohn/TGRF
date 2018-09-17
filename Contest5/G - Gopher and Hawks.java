@@ -2,88 +2,83 @@ import java.io.*;
 import java.util.*;
 
 
-public class GopherandHawks {
+public class Main{
 	static double distance;
 	static int INF = (int) 1e9;
+
+	static ArrayList<Double> xCor;
+	static ArrayList<Double> yCor;
 	static ArrayList<ArrayList<Integer>> graph;
 	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		FileInputStream instream = new FileInputStream("src/in.txt");  
+		BufferedReader br = new BufferedReader(new InputStreamReader(instream));
 		StringTokenizer  stk;
-		ArrayList<Point> points;
+		int ntc = 0;
 		while(true) {
 			String line = br.readLine().trim();
+			ntc++;
 			if(line==null)break;
 			stk = new StringTokenizer(line);
-			int v = Integer.parseInt(stk.nextToken());
-			int t = Integer.parseInt(stk.nextToken());
+			Double v = Double.parseDouble(stk.nextToken());
+			Double t = Double.parseDouble(stk.nextToken());
 			if(v+t==0)break;
 			distance  = v*t*60.0;
-			points = new ArrayList<>();
+			xCor= new ArrayList<>();
+			yCor= new ArrayList<>();
 			while(true) {
 				line = br.readLine().trim();
 				if(line.isEmpty())break;
 				stk = new StringTokenizer(line);
-				points.add(new Point(Double.parseDouble(stk.nextToken()),Double.parseDouble(stk.nextToken())));
-				points.get(points.size()-1).print();;
+				Double x = Double.parseDouble(stk.nextToken());
+				Double y = Double.parseDouble(stk.nextToken());
+				xCor.add(x);
+				yCor.add(y);
 			}
+		
 			graph = new ArrayList<>();
-			for (int i = 0; i < points.size(); i++) {
+			for (int i = 0; i < xCor.size(); i++) {
 				graph.add(new ArrayList<>());	
 			}
-			System.err.println(distance);
-			for (int i = 0; i < points.size(); i++) {
-				for (int j = i+1; j < points.size(); j++) {
-					System.err.println(i+ " " + j + " " + points.get(i).dist(points.get(j)));
-					if(points.get(i).dist(points.get(j))>distance) {
+			for (int i = 0; i < xCor.size(); i++) {
+				for (int j = i+1; j < xCor.size(); j++) {
+					double disntanceTMP = dist(xCor.get(i),xCor.get(j),yCor.get(i),yCor.get(j));
+					if(disntanceTMP<=distance) {
 						graph.get(i).add(j);
 						graph.get(j).add(i);
 					}
 				}
 			}
-			System.err.println(graph.size());
-			int res = bfs();
-			System.out.println((res==0)?"No." : String.format("Yes, visiting %d other holes",res));
+			long  res = bfs();
+			System.out.println((res==-1)?"No." : String.format("Yes, visiting %d other holes.",res));
 			
 		}
 		
 	}
 	
-	static int bfs() {
+	static long bfs() {
 		ArrayDeque<Integer> q = new ArrayDeque<>();
-		int dis[] = new int[graph.size()+1];
+		long dis[] = new long[graph.size()+1];
 		q.push(0);
 		Arrays.fill(dis,INF);
 		dis[0] = 0;
 		while(!q.isEmpty()) {
 			int u = q.pollFirst();
-			System.err.println(u + " " + dis[u]);
-			if(u==1)return dis[1];
 			for(int v : graph.get(u)) {
 				if(dis[v]==INF) {
+					if(v==1)return dis[u];
 					dis[v] = dis[u]+ 1;
 					q.push(v);
 				}
 			}
 		}
-		return 0;
+		return -1;
+	}
+	
+	public static double dist(Double x1,Double x2,Double y1,Double y2) {
+		Double r = (x1-x2)*(x1-x2);
+		Double r2 = (y1-y2)*(y1-y2);
+		return Math.sqrt(r+r2);
 	}
 	
 }
 
-class Point{
-	
-	static double x,y;
-	public Point(double x, double y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	public double dist(Point other) {
-		return Math.sqrt(Math.pow(other.x-this.x,2.) + Math.pow(other.y-this.y,2.) );
-	}
-	
-	public void print(){
-		System.err.println("("+x+","+y+")");
-	}
-		
-}
