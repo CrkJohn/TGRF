@@ -53,10 +53,10 @@ void unionFind(int x, int y){
 		int yRaiz = findR(y);
 		if(xRaiz == yRaiz)return;
 		if (r[xRaiz] < r[yRaiz]){
-				p[xRaiz] = yRaiz;
+			p[xRaiz] = yRaiz;
 		}else{
-				p[yRaiz] = xRaiz;
-        if(r[xRaiz]==r[yRaiz])r[xRaiz]++;
+			p[yRaiz] = xRaiz;
+        		if(r[xRaiz]==r[yRaiz])r[xRaiz]++;
 		}
 }
 
@@ -75,12 +75,12 @@ int main() {
 	cout << fixed;
 	cout.precision(2);
 	int f = 0;
-    while (ntc--){
+    	while (ntc--){
 			cin >> n;
 			pts.clear();
 			FOR(i,n){
 				cin >> x >> y;
-    			pts.push_back(dd(x,y));
+    				pts.push_back(dd(x,y));
 			}
 			if(f)cout << endl;
 			f = 1;
@@ -90,12 +90,9 @@ int main() {
 					adjList.pb(node(i+1,j+1,dist(pts[i],pts[j])));
 				}
 			}
-
-			cerr << "Good" << endl;
 			createMST(adjList.size());
 			cin >> m;
 			int u ,v ;
-
 			FOR(i,m){
 				cin >> u >> v;
 				unionFind(u,v);
@@ -122,6 +119,3 @@ int main() {
 			}
     }
 }
-/*
-
-*/
