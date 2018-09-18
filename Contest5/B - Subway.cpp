@@ -33,8 +33,9 @@ int main(){
             if(str=="")break;
             ss.clear();
             ss << str;
+	    ss.clear();
 
-        }
+       	 }
 	}
 	return 0;
 
