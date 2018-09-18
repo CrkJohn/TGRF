@@ -51,20 +51,20 @@ void unionFind(int x, int y){
 
 
 int main(){
-		//freopen("in.txt", "r", stdin); freopen("out.txt", "w", stdout);
-		ios::sync_with_stdio(0);
-		cin.tie(0);
-    int ntc, n, m;
-    vector<ii> pts;
-    int x, y,u,v;
-		cin >> ntc;
-		int f = 0;
-    while(ntc--) {
+	//freopen("in.txt", "r", stdin); freopen("out.txt", "w", stdout);
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+    	int ntc, n, m;
+    	vector<ii> pts;
+   	int x, y,u,v;
+	cin >> ntc;
+	int f = 0;
+    	while(ntc--) {
         cin >> n;
         pts.clear();
         FOR(i,n){
-						cin >> x >> y;
-						pts.pb(ii(x,y));
+		cin >> x >> y;
+		pts.pb(ii(x,y));
         }
 
         if(f)cout<<endl;
@@ -73,29 +73,29 @@ int main(){
         cin >> m;
         int componentes = 0;
         while(m--) {
-						cin >> u >> v;
-            if(findR(u)!=findR(v)){
-								unionFind(u,v);
-								componentes++;
-            }
+		cin >> u >> v;
+            	if(findR(u)!=findR(v)){
+			unionFind(u,v);
+			componentes++;
+		}
         }
         if(componentes == n-1) {
             cout <<"No new highways need"<< endl;
         } else {
-						vector<node> adjList;
+	    vector<node> adjList;
             FOR(i,n) {
                 loop(j,i+1,n){
-										int dist =  (pts[i].fi-pts[j].fi)*(pts[i].fi-pts[j].fi)+(pts[i].se-pts[j].se)*(pts[i].se-pts[j].se);
-										adjList.pb(node(i+1,j+1,dist));
+			int dist =  (pts[i].fi-pts[j].fi)*(pts[i].fi-pts[j].fi)+(pts[i].se-pts[j].se)*(pts[i].se-pts[j].se);
+			adjList.pb(node(i+1,j+1,dist));
                 }
             }
             sort(adjList.begin(),adjList.end(),cmp);
             int lenAdj = adjList.size();
             FOR(i,lenAdj) {
-								int h = adjList[i].u , k = adjList[i].v;
+		int h = adjList[i].u , k = adjList[i].v;
                 if(findR(h)!=findR(k)) {
-										unionFind(h,k);
-										cout << h <<" "<< k<< endl;
+			unionFind(h,k);
+			cout << h <<" "<< k<< endl;
                 }
             }
         }
