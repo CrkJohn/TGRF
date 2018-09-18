@@ -63,8 +63,8 @@ void unionFind(int x, int y){
 
 int main() {
 	//freopen("in.txt", "r", stdin); freopen("out.txt", "w", stdout);
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 	string lec;
 	stringstream ss;
 	double v,t,d;
@@ -74,15 +74,16 @@ int main() {
 	cin >> ntc;
 	cout << fixed;
 	cout.precision(2);
-	
+	int f = 0;
     while (ntc--){
 			cin >> n;
 			pts.clear();
 			FOR(i,n){
 				cin >> x >> y;
-    			pts.push_back(dd(x,y));	
+    			pts.push_back(dd(x,y));
 			}
-			
+			if(f)cout << endl;
+			f = 1;
 			vector<node> adjList;
 			FOR(i,n){
 				loop(j,i+1,n){
@@ -94,36 +95,30 @@ int main() {
 			createMST(adjList.size());
 			cin >> m;
 			int u ,v ;
-			
+
 			FOR(i,m){
 				cin >> u >> v;
-				unionFind(u,v); 
+				unionFind(u,v);
 				componentes++;
 			}
 			int lon = adjList.size();
-			sort(adjList.begin(),adjList.end());	
-			/*FOR(i,lon){
-				node e = adjList[i];
-				cout << e.u << " " << e.v <<" " <<e.c << endl;
+			if(componentes==n-1)cout << "No new highways need" << endl;
+			else{
+				sort(adjList.begin(),adjList.end());
+				vector<pair<int,int> > result;
+				int tmpLON =0;
+				FOR(i,lon){
+					node e = adjList[i];
+					if(findR(e.u)!=findR(e.v)){
+						unionFind(e.u,e.v);
+						result.pb( make_pair(min(e.u,e.v), max(e.u,e.v) ));
+						cout  << e.u << " " << e.v << endl;
+						tmpLON++;
+						componentes++;
+					}
+					if(componentes==n-1)break;
+				}
 				
-			}*/
-			vector<pair<int,int> > result;
-			int tmpLON =0;
-			
-			FOR(i,lon){
-				node e = adjList[i];
-				if(findR(e.u)!=findR(e.v)){
-					unionFind(e.u,e.v);
-					result.pb( make_pair(min(e.u,e.v), max(e.u,e.v) ));
-					tmpLON++;
-					componentes++;
-				}	
-				if(componentes==n-1)break;
-			}
-			sort(result.begin(),result.end());
-			FOR(i,tmpLON){
-				cout << result[i].fi << " " << result[i].se<< endl;
 			}
     }
 }
-
