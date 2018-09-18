@@ -11,36 +11,25 @@ using namespace std;
 
 typedef vector<int> vi;
 typedef vector<vi> graph;
-typedef pair<double,double> dd;
+typedef pair<int,int> ii;
 
-const  int N  = 500000 ,INF = 1e9;
-int componentes;
-int dis[N] , p[N], r[N];
-
-graph G;
-
-
-double dist(dd p1, dd p2) {
-    return sqrt(((p1.fi-p2.fi)*(p1.fi-p2.fi) ) + ((p1.se-p2.se)*(p1.se-p2.se)));
-}
-
+const int N = 1000;
+int p[755], r[755];
 struct node{
-	int u,v;
-	double c;
-	node(int x, int y,double d): u(x),v(y) ,c(d){};
-	bool operator <(const node &e){
-		return c<e.c;
-	}
+    int u, v, c;
+    node(int x, int y,int d): u(x),v(y) ,c(d){};
+
 };
 
+bool cmp(const node &e,const node &e1){
+		 return e.c < e1.c;
+}
+
 void createMST(int n){
-	//cerr << n << endl;
 	FOR(c,n){
 		p[c] = c;
 		r[c] = 0;
-		//cerr<< c << endl;
 	}
-	componentes = 0;
 }
 
 int findR(int x){
@@ -53,69 +42,63 @@ void unionFind(int x, int y){
 		int yRaiz = findR(y);
 		if(xRaiz == yRaiz)return;
 		if (r[xRaiz] < r[yRaiz]){
-			p[xRaiz] = yRaiz;
+				p[xRaiz] = yRaiz;
 		}else{
-			p[yRaiz] = xRaiz;
-        		if(r[xRaiz]==r[yRaiz])r[xRaiz]++;
+				p[yRaiz] = xRaiz;
+        if(r[xRaiz]==r[yRaiz])r[xRaiz]++;
 		}
 }
 
 
-int main() {
-	//freopen("in.txt", "r", stdin); freopen("out.txt", "w", stdout);
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	string lec;
-	stringstream ss;
-	double v,t,d;
-	double x,y;
-	vector<dd> pts;
-	int ntc,n,m;
-	cin >> ntc;
-	cout << fixed;
-	cout.precision(2);
-	int f = 0;
-    	while (ntc--){
-			cin >> n;
-			pts.clear();
-			FOR(i,n){
-				cin >> x >> y;
-    				pts.push_back(dd(x,y));
-			}
-			if(f)cout << endl;
-			f = 1;
-			vector<node> adjList;
-			FOR(i,n){
-				loop(j,i+1,n){
-					adjList.pb(node(i+1,j+1,dist(pts[i],pts[j])));
-				}
-			}
-			createMST(adjList.size());
-			cin >> m;
-			int u ,v ;
-			FOR(i,m){
-				cin >> u >> v;
-				unionFind(u,v);
-				componentes++;
-			}
-			int lon = adjList.size();
-			if(componentes==n-1)cout << "No new highways need" << endl;
-			else{
-				sort(adjList.begin(),adjList.end());
-				vector<pair<int,int> > result;
-				int tmpLON =0;
-				FOR(i,lon){
-					node e = adjList[i];
-					if(findR(e.u)!=findR(e.v)){
-						unionFind(e.u,e.v);
-						result.pb( make_pair(min(e.u,e.v), max(e.u,e.v) ));
-						cout  << e.u << " " << e.v << endl;
-						tmpLON++;
-						componentes++;
-					}
-					if(componentes==n-1)break;
-				}
-				
-			}
+int main(){
+		//freopen("in.txt", "r", stdin); freopen("out.txt", "w", stdout);
+		ios::sync_with_stdio(0);
+		cin.tie(0);
+    int ntc, n, m;
+    vector<ii> pts;
+    int x, y,u,v;
+		cin >> ntc;
+		int f = 0;
+    while(ntc--) {
+        cin >> n;
+        pts.clear();
+        FOR(i,n){
+						cin >> x >> y;
+						pts.pb(ii(x,y));
+        }
+
+        if(f)cout<<endl;
+        f = 1;
+        createMST(n+5);
+        cin >> m;
+        int componentes = 0;
+        while(m--) {
+						cin >> u >> v;
+            if(findR(u)!=findR(v)){
+								unionFind(u,v);
+								componentes++;
+            }
+        }
+        if(componentes == n-1) {
+            cout <<"No new highways need"<< endl;
+        } else {
+						vector<node> adjList;
+            FOR(i,n) {
+                loop(j,i+1,n){
+										int dist =  (pts[i].fi-pts[j].fi)*(pts[i].fi-pts[j].fi)+(pts[i].se-pts[j].se)*(pts[i].se-pts[j].se);
+										adjList.pb(node(i+1,j+1,dist));
+                }
+            }
+            sort(adjList.begin(),adjList.end(),cmp);
+            int lenAdj = adjList.size();
+            FOR(i,lenAdj) {
+								int h = adjList[i].u , k = adjList[i].v;
+                if(findR(h)!=findR(k)) {
+										unionFind(h,k);
+										cout << h <<" "<< k<< endl;
+                }
+            }
+        }
     }
+    return 0;
 }
