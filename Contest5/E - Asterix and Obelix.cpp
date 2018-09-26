@@ -18,6 +18,10 @@ int p[N],r[N],dist[N];
 int cost[N];
 
 
+/*
+ Wrongs Answer
+*/
+
 struct node{
 	int u,v,dist;
 	node(double u_, double v_, double dist_) : u(u_) , v(v_),dist(dist_) {};
