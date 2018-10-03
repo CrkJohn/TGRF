@@ -10,7 +10,13 @@ using namespace std;
 typedef pair<int,int> ii;
 typedef pair<int,ii> edge;
 typedef long long large;
-
+/*
+3652 - Lazy Jumping Frog
+Veredict =  Accepted 
+Time = 2.018
+Live Archive
+Regionals 2006 >> Latin America - South America
+*/
 int cal[5][5] = {
 		{7,6,5,6,7},
 		{6,3,2,3,6},
