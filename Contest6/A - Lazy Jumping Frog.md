@@ -1,4 +1,5 @@
-´´´C++ 
+```
+C++ 
 #include<bits/stdc++.h>
 #define loop(i,a,b) for(int i = a; i<b;i++)
 #define loopI(i,a,b) for(int i = a; i<=b;i++)
@@ -108,5 +109,4 @@ int main(){
 	}
 	return 0;
 }
-
-´´´
+```
