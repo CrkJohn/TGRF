@@ -6,55 +6,40 @@
 using namespace std;
 typedef vector<int> vi;
 
-const int maxN=108, INF = 1e9;
-int graph[maxN][maxN],vis[maxN],vis2[maxN],N,M,nodTop,AdjList[204][204],res[204][204],s,t;
+const int MAX_V=205, INF = 1e9;
+int graph[MAX_V][MAX_V],vis[MAX_V],vis2[MAX_V],N,M,nodTop,AdjList[204][204];
 
-
-int mf, f;
+int res[205][205], mf, f, s, t;                          // global variables
 vi p;
 
-
-void augment(int v, int minEdge) {
-	if (v == s) {
-		f = minEdge;
-		return;
-	} else if (p[v] != -1) {
-		augment(p[v], min(minEdge, res[p[v]][v]));
-		res[p[v]][v] -= f;
-		res[v][p[v]] += f;
-	}
+void augment(int v, int minEdge) {     // traverse BFS spanning tree from s to t
+  if (v == s) { f = minEdge; return; }  // record minEdge in a global variable f
+  else if (p[v] != -1) {
+			augment(p[v], min(minEdge, res[p[v]][v])); // recursive
+			res[p[v]][v] -= f; res[v][p[v]] += f; }       // update
 }
+
 
 void EdmondKarps() {
 	mf = 0;
-	while (1) {
+  while (1) {
 		f = 0;
-		bitset<2*maxN+3> visited;
-		visited.set(s);
+    vi dist(MAX_V, INF);
+		dist[s] = 0;
 		queue<int> q;
 		q.push(s);
-		p.assign(2*maxN+2, -1);
-		while (!q.empty()) {
-			int u = q.front();
-			q.pop();
-			if (u==t)break;
-			//for (int i = 0; i < (int) AdjList[u].size(); i++) {
-			FOR(i,2*N+2){
-				if (res[u][i] > 0 && !visited.test(i) && AdjList[u][i]) {
-
-						cerr << u << "->" << i<< endl;
-						visited.set(i);
-						q.push(i);
-						p[i] = u;
-				}
-			}
-		}
-		augment(t, INF);
-
-		//cerr << "Flow : "<< f << endl;
-		if (f == 0)break;
-		mf += f;
-	}
+    p.assign(MAX_V, -1);           // record the BFS spanning tree, from s to t!
+    while (!q.empty()) {
+      int u = q.front(); q.pop();
+      if (u == t) break;
+      for (int v = 0; v < 2*N+2; v++)
+        if (res[u][v] > 0 && dist[v] == INF)
+          dist[v] = dist[u] + 1, q.push(v), p[v] = u;
+    }
+    augment(t, INF);     // find the min edge weight `f' along this path, if any
+    if (f == 0) break;      // we cannot send any more flow (`f' = 0), terminate
+    mf += f;                 // we can still send a flow, increase the max flow!
+  }
 }
 
 
@@ -75,7 +60,7 @@ void createBipartiteFlow(){
             res[i+1][j+N+1] = 1;
         }
     }
-		FOR(i,2*N+1){
+		/*FOR(i,2*N+1){
         cerr << "Node " << i << " : ";
         FOR(j,2*N+2){
             //cerr << j <<"-";
@@ -85,7 +70,7 @@ void createBipartiteFlow(){
         }
         cerr << endl;
 
-    }
+    }*/
     s = x0;
     t = y0;
     EdmondKarps();
@@ -141,287 +126,3 @@ int main(){
     }
     return 0;
 }
-
-
-/*
-4 5
-0 1
-0 2
-0 3
-1 2
-2 3
-4 5
-1 0
-1 2
-2 0
-2 3
-3 0
-5 6
-1 0
-2 1
-2 3
-3 0
-3 4
-4 0
-5 7
-0 3
-0 4
-1 4
-2 0
-2 1
-2 4
-3 4
-2 1
-0 1
-3 3
-0 1
-0 2
-1 2
-5 7
-0 1
-0 2
-0 3
-0 4
-1 4
-2 4
-3 4
-6 8
-1 0
-2 0
-3 2
-4 1
-4 2
-5 0
-5 3
-5 4
-5 7
-0 4
-1 4
-2 0
-2 1
-2 3
-2 4
-3 4
-2 1
-1 0
-4 4
-0 3
-1 0
-1 2
-2 0
-4 4
-0 1
-0 2
-1 3
-2 1
-6 8
-0 1
-2 5
-3 0
-3 2
-3 4
-3 5
-4 1
-5 1
-4 4
-0 1
-0 2
-1 2
-3 0
-3 3
-1 0
-2 0
-2 1
-4 5
-0 1
-0 2
-0 3
-1 3
-2 3
-2 1
-0 1
-6 9
-1 0
-1 4
-2 0
-3 0
-4 0
-5 0
-5 1
-5 2
-5 3
-2 1
-1 0
-5 6
-0 1
-1 2
-3 0
-3 1
-3 4
-4 2
-5 7
-0 3
-1 3
-1 4
-2 3
-4 0
-4 2
-4 3
-4 5
-0 3
-1 0
-1 2
-1 3
-2 3
-3 3
-1 0
-1 2
-2 0
-2 1
-1 0
-4 5
-0 2
-1 0
-1 2
-1 3
-3 2
-5 6
-0 1
-1 2
-3 0
-3 4
-4 1
-4 2
-4 4
-0 2
-1 0
-1 3
-3 2
-4 4
-0 3
-1 0
-1 2
-2 3
-6 8
-0 3
-1 0
-1 2
-1 4
-1 5
-2 3
-4 3
-5 3
-4 5
-0 3
-1 0
-2 0
-2 1
-2 3
-6 9
-0 5
-1 0
-1 3
-1 4
-2 5
-3 0
-3 2
-3 5
-4 5
-3 3
-0 2
-1 0
-1 2
-2 1
-0 1
-5 7
-0 1
-2 0
-2 1
-2 3
-3 1
-4 1
-4 2
-3 3
-0 1
-0 2
-2 1
-2 1
-1 0
-2 1
-0 1
-6 8
-0 1
-2 1
-3 1
-3 2
-4 0
-4 3
-4 5
-5 1
-2 1
-0 1
-6 8
-0 3
-1 2
-1 4
-1 5
-2 4
-4 0
-4 5
-5 3
-5 6
-0 3
-1 0
-1 2
-1 4
-2 3
-4 2
-2 1
-1 0
-4 4
-0 2
-1 2
-3 0
-3 1
-3 3
-0 2
-1 0
-1 2
-6 8
-0 1
-1 5
-3 2
-4 0
-4 1
-4 2
-4 3
-5 2
-3 3
-0 1
-0 2
-1 2
-2 1
-0 1
-3 3
-0 1
-2 0
-2 1
-3 3
-0 2
-1 0
-1 2
-3 3
-______________________ Prueba _____________________________
-
-
-5 7
-0 3
-1 2
-2 0
-4 0
-4 1
-4 2
-4 3
-
-
-*/
