@@ -141,3 +141,127 @@ int main(){
   }
   return 0;
 }
+___________________
+#include<bits/stdc++.h>
+#define FOR(i,b) for(int i = 0; i<b;i++)
+#define loop(i,a,b) for(int i = a; i<b;i++)
+#define fi first
+#define se second
+#define pb push_back
+
+
+
+using namespace std;
+
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+typedef pair<int,int> ii;
+typedef vector<ii> vii;
+typedef vector<vii> vvii;
+
+vvi g;
+const int inf = 1e9;
+
+const int di[] = {-1, +1, +0, +0};
+const int dj[] = {+0, +0, -1, +1};
+
+int X, Y, D[1100][1100], v[1100][1100];
+
+struct node{
+  int u, v, w;
+  node(){}
+  node(int U, int V, int W) : u(U), v(V), w(W) {}
+  bool operator < (const node &that) const { return w < that.w; }
+};
+
+short int let(const int &i, const int &j){
+    return (0 <= i && i < X && 0 <= j && j < Y);
+}
+
+int main(){
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int ntc,n;
+  int si, sj, fi, fj;
+
+  freopen("in.txt","r",stdin);
+  cin >> ntc;
+  while (ntc--){
+    cin >> n >> X >> Y;
+    cin >> si >> sj >> fi >> fj;
+    FOR(i,X){
+      FOR(j,Y){
+        D[i][j]=inf;
+
+      }
+    }
+    queue<node> q;
+    while (n--){
+      int u, v;
+      cin >> u >> v;
+      D[u][v] = 0;
+      q.push(node(u,v,0));
+    }
+    while (q.size()){
+      node nd = q.front();q.pop();
+      int i = nd.u, j = nd.v, w = nd.w;
+      if (w > D[i][j]) continue;
+      FOR(x,4){
+        int h = i + di[x], k = j + dj[x];
+        if (let(h,k)){
+          D[h][k] = w+1;
+          q.push(node(h,k,w+1));
+        }
+      }
+    }
+    int ans_d = -inf, ans_w = inf;
+    priority_queue<node> pq;
+    pq.push(node(si, sj, D[si][sj]));
+    v[si][sj] = D[si][sj];
+    while (pq.size()){
+      node u = pq.top();
+      int i = u.u, j = u.v, w = u.w;
+      pq.pop();
+      if (i == fi && j == fj){
+        ans_d = w;
+        break;
+      }
+      if (w < v[i][j]) continue;
+      for (int k=0; k<4; ++k){
+        int ni = i + di[k], nj = j + dj[k];
+        if (let(ni, nj)){
+          int new_d = (w < D[ni][nj])?w:D[ni][nj];
+          if (new_d > v[ni][nj]){
+            v[ni][nj] = new_d;
+            pq.push(node(ni, nj, new_d));
+          }
+        }
+      }
+    }
+
+    while (q.size())q.pop();
+    FOR(i,X){
+      FOR(j,Y){
+        v[i][j] = -inf;
+      }
+    }
+    q.push(node(si, sj, 0));
+    while (q.size()){
+      node u = q.front(); q.pop();
+      if (v[u.u][u.v]) continue;
+      v[u.u][u.v] = true;
+      if (u.u== fi && u.v == fj){
+        ans_w = u.w;
+        break;
+      }
+     FOR(x,4){
+        int h = u.u + di[x], k = u.v + dj[x];
+        if (let(h,k) && !v[h][k] && D[h][k] >= ans_d){
+          q.push(node(h,k,u.w+1));
+        }
+      }
+    }
+    cout << ans_d<<" " << ans_w << endl;
+  }
+  return 0;
+}
